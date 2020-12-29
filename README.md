@@ -1,6 +1,6 @@
 
 # RD3D: RGB-D Salient Object Detection via 3D Convolutional Neural Networks
-This repo is the official implementation of ["RD3D: RGB-D Salient Object Detection via 3D Convolutional Neural Networks"] by [Qian Chen](https://github.com/PPOLYpubki), [Ze Liu](https://github.com/zeliu98), Yi Zhang and [Keren Fu](https://github.com/kerenfu).
+This repo is the official implementation of "RD3D: RGB-D Salient Object Detection via 3D Convolutional Neural Networks" by [Qian Chen](https://github.com/PPOLYpubki), [Ze Liu](https://github.com/zeliu98), Yi Zhang and [Keren Fu](https://github.com/kerenfu).
 
 
 ## Main Results 
