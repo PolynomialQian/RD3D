@@ -57,7 +57,7 @@ We follow the RGB-D SOD benchmark setting from: http://dpfan.net/d3netbenchmark/
 ```
 @article{chen2021rd3d,
   title={RGB-D Salient Object Detection via 3D Convolutional Neural},
-  author={Qian, Chen and Ze, Liu and Yi, Zhang and Keren, Fu and Qijun Zhao and Hongwei Du},
+  author={Chen, Qian and Liu,Ze and Zhang, Yi and Fu, Keren and Zhao, Qijun and Du, Hongwei},
   journal={AAAI},
   year={2021}
 }
