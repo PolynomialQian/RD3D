@@ -2,21 +2,23 @@ import os
 import argparse
 import copy
 import numpy as np
-from scipy import misc
+import imageio
 
 import torch
 import torch.nn.functional as F
 import torchvision
 
 from model.rd3d import RD3D
+from model.rd3d_plus import RD3D_plus
 from data import test_dataset
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--model_path', type=str, required=True, help='path to model file')
 parser.add_argument('--testsize', type=int, default=352, help='testing size')
 parser.add_argument('--test_datasets', type=str, default=['NJU2000-test'], nargs='+', help='test dataset')
-parser.add_argument('--data_path', type=str, default='', help='test dataset')
+parser.add_argument('--data_path', type=str, default='data_path', help='test dataset')
 parser.add_argument('--save_path', type=str, help='test dataset')
+parser.add_argument('--model', type=str, help='RD3D or RD3D+')
 # model
 parser.add_argument('--multi_load', action='store_true', help='whether to load multi-gpu weight')
 
@@ -33,7 +35,10 @@ else:
 
 # build model
 resnet = torchvision.models.resnet50(pretrained=True)
-model = RD3D(32, copy.deepcopy(resnet)).cuda()
+if opt.model=="RD3D":
+    model = RD3D(32, copy.deepcopy(resnet))
+else:
+    model = RD3D_plus(32, copy.deepcopy(resnet))
 
 if opt.multi_load:
     state_dict_multi = torch.load(opt.model_path)
@@ -48,9 +53,9 @@ for dataset in test_datasets:
     save_path = os.path.join(save_root, dataset)
     if not os.path.exists(save_path):
         os.makedirs(save_path)
-    image_root = os.path.join(dataset_path, dataset, 'images')
-    gt_root = os.path.join(dataset_path, dataset, 'gts')
-    depth_root = os.path.join(dataset_path, dataset, 'depths')
+    image_root = os.path.join(dataset_path, dataset, 'images/')
+    gt_root = os.path.join(dataset_path, dataset, 'gts/')
+    depth_root = os.path.join(dataset_path, dataset, 'depths/')
     test_loader = test_dataset(image_root, gt_root, depth_root, opt.testsize)
     for i in range(test_loader.size):
         image, gt, depth, name = test_loader.load_data()
@@ -65,5 +70,5 @@ for dataset in test_datasets:
         res = F.upsample(res, size=gt.shape, mode='bilinear', align_corners=False)
         res = res.sigmoid().data.cpu().numpy().squeeze()
         res = (res - res.min()) / (res.max() - res.min() + 1e-8)
-        misc.imsave(os.path.join(save_path, name), res)
+        imageio.imsave(os.path.join(save_path, name), res)
         print(f"{os.path.join(save_path, name)} saved !")

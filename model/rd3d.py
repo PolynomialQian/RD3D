@@ -63,9 +63,9 @@ class Reduction3D(nn.Module):
         return self.reduce(x)
 
 
-class SELayer(nn.Module):
+class CMA(nn.Module):
     def __init__(self, channel, reduction=16):
-        super(SELayer, self).__init__()
+        super(CMA, self).__init__()
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         self.fc = nn.Sequential(
             nn.Linear(channel, channel // reduction, bias=False),
@@ -123,10 +123,10 @@ class ThreeDDecoder(nn.Module):
             BasicConv2d(2 * channel, channel, [1, 1]),
             nn.Conv2d(channel, 1, [1, 1])
         )
-        self.se3 = SELayer(channel * 10)
-        self.se2 = SELayer(channel * 7)
-        self.se1 = SELayer(channel * 5)
-        self.se0 = SELayer(channel * 3)
+        self.se3 = CMA(channel * 10)
+        self.se2 = CMA(channel * 7)
+        self.se1 = CMA(channel * 5)
+        self.se0 = CMA(channel * 3)
 
     def forward(self, x0, x1, x2, x3, x4):
         x2_downconv1 = self.conv_downsample2_1(x2)  # 16
@@ -219,17 +219,9 @@ class Unet3D(nn.Module):
 
         self.reductions0 = Reduction3D(64, channel)
         self.reductions1 = Reduction3D(256, channel)
-
-        self.reductione0 = Reduction3D(64, channel)
-        self.reductione1 = Reduction3D(256, channel)
-
         self.reductions2 = Reduction3D(512, channel)
         self.reductions3 = Reduction3D(1024, channel)
         self.reductions4 = Reduction3D(2048, channel)
-
-        self.reductione2 = Reduction3D(512, channel)
-        self.reductione3 = Reduction3D(1024, channel)
-        self.reductione4 = Reduction3D(2048, channel)
 
         self.output_s = ThreeDDecoder(channel)
 

@@ -10,6 +10,7 @@ import torchvision
 import torch.nn.functional as F
 
 from model.rd3d import RD3D
+from model.rd3d_plus import RD3D_plus
 from data import get_loader
 from utils.func import AvgMeter, clip_gradient
 from utils.lr_scheduler import get_scheduler
@@ -23,9 +24,10 @@ def parse_option():
     parser.add_argument('--trainsize', type=int, default=352, help='training dataset size')
     parser.add_argument('--hflip', action='store_true', help='hflip data')
     parser.add_argument('--vflip', action='store_true', help='vflip data')
-    parser.add_argument('--data_dir', type=str, default='', help='data director')
+    parser.add_argument('--data_dir', type=str, default='data_dir', help='data director')
 
     # training
+    parser.add_argument('--model', type=str, default='', help='RD3D or RD3D+')
     parser.add_argument('--epochs', type=int, default=50, help='epoch number')
     parser.add_argument('--optim', type=str, default='adamW', help='optimizer')
     parser.add_argument('--lr', type=float, default=0.000125, help='learning rate')
@@ -54,19 +56,21 @@ def build_loader(opt):
     num_gpus = torch.cuda.device_count()
     print(f"========>num_gpus:{num_gpus}==========")
 
-    image_root = os.path.join(opt.data_dir, 'RGB-train')
-    gt_root = os.path.join(opt.data_dir, 'GT-train')
-    depth_root = os.path.join(opt.data_dir, 'depth-train')
+    image_root = os.path.join(opt.data_dir, 'RGB-train/')
+    gt_root = os.path.join(opt.data_dir, 'GT-train/')
+    depth_root = os.path.join(opt.data_dir, 'depth-train/')
     train_loader = get_loader(image_root, gt_root, depth_root, batchsize=opt.batchsize * num_gpus,
-                              trainsize=opt.trainsize,
-                              hflip=opt.hflip, vflip=opt.vflip)
+                              trainsize=opt.trainsize)
     return train_loader
 
 
-def build_model():
+def build_model(opt):
     # build model
     resnet = torchvision.models.resnet50(pretrained=True)
-    model = RD3D(32, copy.deepcopy(resnet))
+    if opt.model=="RD3D":
+        model = RD3D(32, copy.deepcopy(resnet))
+    else:
+        model = RD3D_plus(32, copy.deepcopy(resnet))
     print(model)
     model = nn.DataParallel(model).cuda()
     return model
@@ -98,12 +102,12 @@ def main(opt):
         train(train_loader, model, optimizer, CE, scheduler, epoch, opt)
         logger.info('epoch {}, total time {:.2f}, learning_rate {}'.format(epoch, (time.time() - tic),
                                                                            optimizer.param_groups[0]['lr']))
-        if (epoch) % 1 == 0:
-            torch.save(model.state_dict(), os.path.join(opt.output_dir, f"I3D_edge_epoch_{epoch}_ckpt.pth"))
-            logger.info("model saved {}!".format(os.path.join(opt.output_dir, f"I3D_edge_epoch_{epoch}_ckpt.pth")))
-    torch.save(model.state_dict(), os.path.join(opt.output_dir, f"I3D_edge_last_ckpt.pth"))
-    logger.info("model saved {}!".format(os.path.join(opt.output_dir, f"I3D_edge_last_ckpt.pth")))
-    return os.path.join(opt.output_dir, f"I3D_edge_last_ckpt.pth")
+        if (epoch) % 10 == 0:
+            torch.save(model.state_dict(), os.path.join(opt.output_dir, f"RD3D_{epoch}_ckpt.pth"))
+            logger.info("model saved {}!".format(os.path.join(opt.output_dir, f"RD3D_{epoch}_ckpt.pth")))
+    torch.save(model.state_dict(), os.path.join(opt.output_dir, f"RD3D_last_ckpt.pth"))
+    logger.info("model saved {}!".format(os.path.join(opt.output_dir, f"RD3D_ckpt.pth")))
+    return os.path.join(opt.output_dir, f"RD3D_last_ckpt.pth")
 
 
 # training
@@ -139,7 +143,6 @@ def train(train_loader, model, optimizer, criterion, scheduler, epoch, opt):
 
             # forward
             pred_s = model(images)
-
             loss = criterion(pred_s, gts)
 
             loss.backward()

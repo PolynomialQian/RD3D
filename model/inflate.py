@@ -1,5 +1,6 @@
 import torch
 from torch.nn import Parameter
+import torch.nn as nn
 
 
 def inflate_conv(conv2d,
@@ -37,6 +38,61 @@ def inflate_conv(conv2d,
     conv3d.bias = conv2d.bias
     return conv3d
 
+class inflate_conv_light(nn.Module):
+    def __init__(self, conv2d, time_dim=3, time_padding=0, time_stride=1, time_dilation=1,center=False):
+        super(inflate_conv_light,self).__init__()
+        self.time_dim=time_dim
+        kernel_dim = (time_dim, conv2d.kernel_size[0], conv2d.kernel_size[1])
+        padding = (time_padding, conv2d.padding[0], conv2d.padding[1])
+        stride = (time_stride, conv2d.stride[0], conv2d.stride[0])
+        dilation = (time_dilation, conv2d.dilation[0], conv2d.dilation[1])
+        if time_dim == 1:
+            self.conv3d = torch.nn.Conv3d(
+                conv2d.in_channels,
+                conv2d.out_channels,
+                kernel_dim,
+                padding=padding,
+                dilation=dilation,
+                stride=stride)
+        # Repeat filter time_dim times along time dimension
+            weight_2d = conv2d.weight.data
+            weight_3d = weight_2d.unsqueeze(2)
+            # Assign new params
+            self.conv3d.weight = Parameter(weight_3d)
+            self.conv3d.bias = conv2d.bias      
+        else:
+            self.conv3d_spatial = torch.nn.Conv3d(
+                conv2d.in_channels,
+                conv2d.out_channels,
+                kernel_size=(1, kernel_dim[1], kernel_dim[2]),
+                padding=(0, padding[1], padding[2]),
+                dilation=(1, dilation[1], dilation[2]),
+                stride=(1, stride[1], stride[2])
+            )
+            weight_2d = conv2d.weight.data
+            self.conv3d_spatial.weight = Parameter(weight_2d.unsqueeze(2))
+            self.conv3d_spatial.bias = conv2d.bias
+            self.conv3d_time_1 = nn.Conv3d(conv2d.out_channels,conv2d.out_channels,[1,1,1],bias=False)
+            self.conv3d_time_2 = nn.Conv3d(conv2d.out_channels,conv2d.out_channels,[1,1,1],bias=False)
+            self.conv3d_time_3 = nn.Conv3d(conv2d.out_channels,conv2d.out_channels,[1,1,1],bias=False)
+            torch.nn.init.constant_(self.conv3d_time_1.weight,0)
+            torch.nn.init.constant_(self.conv3d_time_3.weight,0)
+            torch.nn.init.eye_(self.conv3d_time_2.weight[:,:,0,0,0])
+
+    def forward(self,x):
+        #N,C,T,H,W
+        if self.time_dim==1:
+            return self.conv3d(x)
+        else:
+            x_spatial=self.conv3d_spatial(x)
+            rgb = x_spatial[:,:,0:1,:,:]
+            depth = x_spatial[:,:,1:2,:,:]
+            f_rgb = self.conv3d_time_2(rgb)
+            f_depth = self.conv3d_time_2(depth)
+            f2_rgb = self.conv3d_time_1(rgb)
+            f2_depth = self.conv3d_time_3(depth)
+            x = torch.cat([f_rgb+f2_depth,f2_rgb+f_depth],dim=2)
+            return x
 
 def inflate_linear(linear2d, time_dim):
     """
