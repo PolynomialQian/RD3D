@@ -1,6 +1,6 @@
 # RGB-D Salient Object Detection via 3D Convolutional Neural Networks (AAAI 2021)
 ## Preface
-This repo contains the source code and prediction saliency maps of our **RD3D** and **RD3D+**. The latter is an extension of the former, which is lighter and more computational efficient and accurate.
+This repo contains the source code and prediction saliency maps of our **RD3D** and **RD3D+**. The latter is an extension of the former, which is lighter and more computationally efficient and accurate.
 
 **RD3D**: ***RGB-D Salient Object Detection via 3D Convolutional Neural Networks*** ([PDF](https://ojs.aaai.org/index.php/AAAI/article/view/16191))
 
