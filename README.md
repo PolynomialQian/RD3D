@@ -1,16 +1,16 @@
 # RGB-D Salient Object Detection via 3D Convolutional Neural Networks (AAAI 2021)
 ## Preface
-This repo contains the source code and prediction saliency maps of our **RD3D** and **RD3D+**. Note that the latter is an extension to the former one.
+This repo contains the source code and prediction saliency maps of our **RD3D** and **RD3D+**. The latter is an extension of the former, which is lighter and more computational efficient and accurate.
 
-**RD3D**: ***RGB-D Salient Object Detection via 3D Convolutional Neural Networks*** ([PDF](https://ojs.aaai.org/index.php/AAAI/article/view/16191/15998)).
+**RD3D**: ***RGB-D Salient Object Detection via 3D Convolutional Neural Networks*** ([PDF](https://ojs.aaai.org/index.php/AAAI/article/view/16191))
 
-**RD3D+**: ***3D Convolutional Neural Networks for RGB-D Salient Object Detection and Beyond*** (PDF coming soon)
+**RD3D+**: The journal extension of the above (PDF coming soon)
 
 ## Update
 
 :fire: **Update 2021/09/10** :fire: The Pytorch implementation of **RD3D+** is now available! PDF is coming soon.
 
-:fire: **Update 2020/12/29** :fire: The Pytorch implementation of **RD3D** is now available! 
+:fire: **Update 2020/12/29** :fire: The Pytorch implementation of **RD3D** is now available!
 
 ## Dataset
 
