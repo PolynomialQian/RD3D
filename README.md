@@ -114,7 +114,7 @@ We follow the authors of the [SINet](https://github.com/DengPingFan/SINet) to co
   | ReDWeb-S | 0.700\|0.718  |        0.687\|0.697         |        0.780\|0.786         | 0.136\|0.130 |
 
 * Downloading links of our result saliency maps:
-  * RD3D:  [Baidu Cloud](https://pan.baidu.com/s/132ChkfOY9hDQ4FO4ada2Mg) (Fetch code: 3e96)
+  * RD3D:  [Baidu Cloud](https://pan.baidu.com/s/1OBCV4vDgjlpCsmRE76fxIg) (Fetch code: am16)
   * RD3D+: [Baidu Cloud](https://pan.baidu.com/s/10FuFy76JrP725i4q1-6R3A) (Fetch code: hwna) 
 
 ### Benchmark RGB-D SOD
