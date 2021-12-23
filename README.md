@@ -55,8 +55,8 @@ Required packages are listed below:
 
 * Download the pre-trained weights and save them as `./model_path/RD3D.pth` and `./model_path/RD3D_plus.pth`.
 
-  * RD3D ([Baidu Cloud](https://pan.baidu.com/s/1CQLLcdfsGdOCqjd2iDGVNw), Fetch code: yoyj)
-  * RD3D+ ([Baidu Cloud](https://pan.baidu.com/s/17Sd1KYrWe2oD8u4i7kr6OA), Fetch code: 7d3g)
+  * RD3D [Baidu Cloud](https://pan.baidu.com/s/1CQLLcdfsGdOCqjd2iDGVNw), Fetch code: yoyj,[Google Drive](https://drive.google.com/file/d/121HSE8dkqEKEhTm3J2Qj-UYla-HOVQ2i/view?usp=sharing)
+  * RD3D+ [Baidu Cloud](https://pan.baidu.com/s/17Sd1KYrWe2oD8u4i7kr6OA), Fetch code: 7d3g,[Google Drive](https://drive.google.com/file/d/1txqDEB9mOCwZcsZ1qhvjc61nS6RFvaW4/view?usp=sharing)
   
 * Make sure your testing dataset be in `./data_path/` and run the following commands for inference:
 
@@ -69,7 +69,7 @@ Required packages are listed below:
   python test.py --model RD3D_plus --model_path ./model_path/RD3D_plus.pth --data_path ./data_path/ --save_path ./save/all_results/
   ```
 
-  * In particular, as what was mentioned in the [Important tips](#Dataset), we also provide pre-trained weights of RD3D ([Baidu Cloud](https://pan.baidu.com/s/1ioNJ78_7DsRFR2HY23Wmhg), Fetch code: enza) and pre-trained weights of RD3D+ ([Baidu Cloud](https://pan.baidu.com/s/1iuhAMnRXo0Qa-aD5y7SN8w), Fetch code: 1lfc) for the DUTLF-D case. Specifically, run the following command to test on the DUTLF-D:
+  * In particular, as what was mentioned in the [Important tips](#Dataset), we also provide pre-trained weights of RD3D ([Baidu Cloud](https://pan.baidu.com/s/1ioNJ78_7DsRFR2HY23Wmhg), Fetch code: enza),([Google Drive](https://drive.google.com/file/d/1v0ogTJL5DwqT5_bCUIbsS8Blh3QuKMEQ/view?usp=sharing)) and pre-trained weights of RD3D+ ([Baidu Cloud](https://pan.baidu.com/s/1iuhAMnRXo0Qa-aD5y7SN8w), Fetch code: 1lfc),([Google Drive](https://drive.google.com/file/d/1ZJRYwjj7Nx3nShyUccRDTrRn9jhE43gp/view?usp=sharing)) for the DUTLF-D case. Specifically, run the following command to test on the DUTLF-D:
 
   ```bash
   # RD3D
@@ -114,8 +114,8 @@ We follow the authors of the [SINet](https://github.com/DengPingFan/SINet) to co
   | ReDWeb-S | 0.700\|0.718  |        0.687\|0.697         |        0.780\|0.786         | 0.136\|0.130 |
 
 * Downloading links of our result saliency maps:
-  * RD3D:  [Baidu Cloud](https://pan.baidu.com/s/1OBCV4vDgjlpCsmRE76fxIg) (Fetch code: am16)
-  * RD3D+: [Baidu Cloud](https://pan.baidu.com/s/10FuFy76JrP725i4q1-6R3A) (Fetch code: hwna) 
+  * RD3D:  [Baidu Cloud](https://pan.baidu.com/s/1OBCV4vDgjlpCsmRE76fxIg) (Fetch code: am16), [Google Drive](https://drive.google.com/file/d/14Kpdyh9EAFC4lphwGa3XNBr3_YXTtjV_/view?usp=sharing)
+  * RD3D+: [Baidu Cloud](https://pan.baidu.com/s/10FuFy76JrP725i4q1-6R3A) (Fetch code: hwna), [Google Drive](https://drive.google.com/file/d/1mioF1YhZ78W6cZGAH_l-Ym-QLZtObOtJ/view?usp=sharing)
 
 ### Benchmark RGB-D SOD
 The complete RGB-D SOD benchmark can be found in this [page](http://dpfan.net/d3netbenchmark/).
