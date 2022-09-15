@@ -1,12 +1,17 @@
 # RGB-D Salient Object Detection via 3D Convolutional Neural Networks (AAAI 2021)
+
+# 3-D Convolutional Neural Networks for RGB-D Salient Object Detection and Beyond (IEEE TNNLS)
+
 ## Preface
 This repo contains the source code and prediction saliency maps of our **RD3D** and **RD3D+**. The latter is an extension of the former, which is lighter and more computationally efficient and accurate.
 
 **RD3D**: ***RGB-D Salient Object Detection via 3D Convolutional Neural Networks*** ([PDF](https://ojs.aaai.org/index.php/AAAI/article/view/16191))
 
-**RD3D+**: The journal extension of the above (PDF coming soon)
+**RD3D+**: ***3-D Convolutional Neural Networks for RGB-D Salient Object Detection and Beyond*** ([PDF](https://ieeexplore.ieee.org/document/9889257))
 
 ## Update
+
+:fire: **Update 2022/09/15** :fire: Our work of **RD3D+** is officially accepted and published in the IEEE Transactions on Neural Networks and Learning Systems now!
 
 :fire: **Update 2021/09/10** :fire: The Pytorch implementation of **RD3D+** is now available! PDF is coming soon.
 
@@ -83,7 +88,7 @@ Required packages are listed below:
 ### Training
 
 * By default, make sure the training datasets be in the folder `./data_path/`.
-* Run the following command for training (Note that the `model_name` below can be either `RD3D` or `RD3D_plus`.): 
+* Run the following command for training (Note that the `model_name` below can be either `RD3D` or `RD3D_plus`): 
 
     ```bash
     python train.py --model [model_name] --data_dir ./data_path/
@@ -134,4 +139,3 @@ Please cite our work if you find them useful:
 	year={2021}
     }
 ```
-
